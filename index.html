@@ -47,7 +47,6 @@ button {
 
 #yes {
   position: relative;
-  z-index: 2;
 }
 
 #no {
@@ -138,7 +137,7 @@ button {
 
   <p id="timer"></p>
 
-  <button id="music-btn">🎶 Включить песню</button>
+  <button id="music-btn">🎶 Включить песню на фон</button>
   <audio id="music" src="music.mp3"></audio>
 
   <div class="gallery" id="gallery">
@@ -243,7 +242,7 @@ musicBtn.addEventListener('click', () => {
     musicBtn.innerText = '⏸ Пауза';
   } else {
     music.pause();
-    musicBtn.innerText = '🎶 Включить нашу песню';
+    musicBtn.innerText = '🎶 Вернуть песню на фон';
   }
 });
 
