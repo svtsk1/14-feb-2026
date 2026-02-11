@@ -23,8 +23,9 @@ body {
   text-align: center;
   width: 420px;
   position: relative;
-  overflow: hidden;
 }
+
+h1 { margin-top: 0; }
 
 button {
   padding: 10px 20px;
@@ -39,14 +40,21 @@ button {
 
 .buttons {
   position: relative;
-  height: 60px;
-  margin-top: 15px;
+  height: 120px; /* зона для хаоса */
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+#yes {
+  position: relative;
+  z-index: 2;
 }
 
 #no {
   position: absolute;
   background: #ccc;
   color: #333;
+  transition: top 0.07s linear, left 0.07s linear, transform 0.07s linear;
 }
 
 #timer {
@@ -78,7 +86,7 @@ button {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.85);
   justify-content: center;
   align-items: center;
 }
@@ -88,6 +96,7 @@ button {
   max-height: 90%;
   border-radius: 20px;
 }
+
 </style>
 </head>
 
@@ -122,34 +131,48 @@ button {
 
 <script>
 
-// ❤️ Убегающая кнопка по всей карточке
-const noBtn = document.getElementById('no');
-const card = document.querySelector('.card');
+/* ========= ПАНИЧЕСКАЯ КНОПКА "НЕТ" ========= */
 
-noBtn.addEventListener('mouseover', () => {
-  const maxX = card.clientWidth - noBtn.clientWidth;
-  const maxY = card.clientHeight - noBtn.clientHeight;
+const noBtn = document.getElementById('no');
+const buttonsArea = document.querySelector('.buttons');
+
+function moveButton() {
+  const maxX = buttonsArea.clientWidth - noBtn.clientWidth;
+  const maxY = buttonsArea.clientHeight - noBtn.clientHeight;
 
   const randomX = Math.random() * maxX;
   const randomY = Math.random() * maxY;
 
+  const randomRotate = Math.random() * 60 - 30; // -30° до +30°
+  const randomScale = 0.9 + Math.random() * 0.4;
+
   noBtn.style.left = randomX + 'px';
   noBtn.style.top = randomY + 'px';
-});
+  noBtn.style.transform = `rotate(${randomRotate}deg) scale(${randomScale})`;
+}
 
-// 💖 Кнопка "Да"
+noBtn.addEventListener('mouseenter', moveButton);
+noBtn.addEventListener('click', moveButton);
+
+/* ========= КНОПКА "ДА" ========= */
+
 document.getElementById('yes').addEventListener('click', () => {
   alert('Я тебя очень люблю ❤️');
 
   document.getElementById('gallery').style.display = 'block';
 });
 
-// ⏳ Таймер (укажи правильную дату!)
-const startDate = new Date(2020, 10, 13); // 1 июня 2023
+/* ========= ТАЙМЕР (ИСПРАВЛЕННЫЙ) ========= */
+/* ВАЖНО: месяц считается с 0!
+   январь=0, февраль=1, март=2 ... */
+
+const startDate = new Date(2020, 10, 13); // ← поменяй на вашу дату
 
 function updateTimer() {
   const now = new Date();
   const diff = now - startDate;
+
+  if (diff < 0) return;
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
@@ -162,7 +185,8 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
-// 🎶 Музыка
+/* ========= МУЗЫКА ========= */
+
 const music = document.getElementById('music');
 const musicBtn = document.getElementById('music-btn');
 
@@ -176,7 +200,8 @@ musicBtn.addEventListener('click', () => {
   }
 });
 
-// 📸 Лайтбокс
+/* ========= ЛАЙТБОКС ========= */
+
 const images = document.querySelectorAll('.gallery img');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
@@ -193,5 +218,6 @@ lightbox.addEventListener('click', () => {
 });
 
 </script>
+
 </body>
 </html>
