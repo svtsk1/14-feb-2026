@@ -40,7 +40,7 @@ button {
 
 .buttons {
   position: relative;
-  height: 120px; /* зона для хаоса */
+  height: 120px;
   margin-top: 20px;
   border-radius: 15px;
 }
@@ -97,6 +97,29 @@ button {
   border-radius: 20px;
 }
 
+/* Кастомное окно */
+.custom-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 </style>
 </head>
 
@@ -130,6 +153,15 @@ button {
   </div>
 </div>
 
+<!-- Модальное окно -->
+<div class="custom-modal" id="customModal">
+  <div class="modal-content">
+    <h2>Я тебя очень люблю ❤️</h2>
+    <button id="closeModal">Поцеловать 😘</button>
+  </div>
+</div>
+
+<!-- Лайтбокс -->
 <div class="lightbox" id="lightbox">
   <img id="lightbox-img">
 </div>
@@ -148,7 +180,7 @@ function moveButton() {
   const randomX = Math.random() * maxX;
   const randomY = Math.random() * maxY;
 
-  const randomRotate = Math.random() * 60 - 30; // -30° до +30°
+  const randomRotate = Math.random() * 60 - 30;
   const randomScale = 0.9 + Math.random() * 0.4;
 
   noBtn.style.left = randomX + 'px';
@@ -159,19 +191,28 @@ function moveButton() {
 noBtn.addEventListener('mouseenter', moveButton);
 noBtn.addEventListener('click', moveButton);
 
-/* ========= КНОПКА "ДА" ========= */
+
+/* ========= КНОПКА "ДА" + МОДАЛКА ========= */
+
+const modal = document.getElementById('customModal');
+const closeModal = document.getElementById('closeModal');
+const gallery = document.getElementById('gallery');
 
 document.getElementById('yes').addEventListener('click', () => {
-  alert('Я тебя очень люблю ❤️');
-
-  document.getElementById('gallery').style.display = 'block';
+  modal.style.display = 'flex';
 });
 
-/* ========= ТАЙМЕР (ИСПРАВЛЕННЫЙ) ========= */
-/* ВАЖНО: месяц считается с 0!
-   январь=0, февраль=1, март=2 ... */
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+  gallery.style.display = 'block';
+});
 
-const startDate = new Date(2020, 10, 13); // ← поменяй на вашу дату
+
+/* ========= ТАЙМЕР ========= */
+/* ВАЖНО: месяц с 0!
+   январь=0, февраль=1 и т.д. */
+
+const startDate = new Date(2020, 10, 13); // ← измени на вашу дату
 
 function updateTimer() {
   const now = new Date();
@@ -190,6 +231,7 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
+
 /* ========= МУЗЫКА ========= */
 
 const music = document.getElementById('music');
@@ -204,6 +246,7 @@ musicBtn.addEventListener('click', () => {
     musicBtn.innerText = '🎶 Включить нашу песню';
   }
 });
+
 
 /* ========= ЛАЙТБОКС ========= */
 
