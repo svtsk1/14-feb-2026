@@ -168,26 +168,65 @@ button {
 <script>
 
 /* ========= ПАНИЧЕСКАЯ КНОПКА "НЕТ" ========= */
-
 const noBtn = document.getElementById('no');
 const buttonsArea = document.querySelector('.buttons');
 
-function moveButton() {
-  const maxX = buttonsArea.clientWidth - noBtn.clientWidth;
-  const maxY = buttonsArea.clientHeight - noBtn.clientHeight;
+// стартовая позиция
+noBtn.style.left = "150px";
+noBtn.style.top = "40px";
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+function moveButtonFarFromCursor(mouseX, mouseY) {
 
-  const randomRotate = Math.random() * 60 - 30;
+  const areaRect = buttonsArea.getBoundingClientRect();
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+
+  const maxX = buttonsArea.clientWidth - btnWidth;
+  const maxY = buttonsArea.clientHeight - btnHeight;
+
+  let bestX = 0;
+  let bestY = 0;
+  let maxDistance = 0;
+
+  // пробуем несколько случайных позиций и выбираем самую далёкую
+  for (let i = 0; i < 10; i++) {
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    const btnCenterX = areaRect.left + x + btnWidth / 2;
+    const btnCenterY = areaRect.top + y + btnHeight / 2;
+
+    const distance = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
+
+    if (distance > maxDistance) {
+      maxDistance = distance;
+      bestX = x;
+      bestY = y;
+    }
+  }
+
+  const randomRotate = Math.random() * 80 - 40;
   const randomScale = 0.9 + Math.random() * 0.4;
 
-  noBtn.style.left = randomX + 'px';
-  noBtn.style.top = randomY + 'px';
+  noBtn.style.left = bestX + "px";
+  noBtn.style.top = bestY + "px";
   noBtn.style.transform = `rotate(${randomRotate}deg) scale(${randomScale})`;
 }
 
-noBtn.addEventListener('mouseenter', moveButton);
+// убегает при движении мыши внутри зоны
+buttonsArea.addEventListener('mousemove', (e) => {
+
+  const btnRect = noBtn.getBoundingClientRect();
+
+  const distance = Math.hypot(
+    e.clientX - (btnRect.left + btnRect.width / 2),
+    e.clientY - (btnRect.top + btnRect.height / 2)
+  );
+
+  if (distance < 100) { // чем меньше — тем злее
+    moveButtonFarFromCursor(e.clientX, e.clientY);
+  }
+});
 noBtn.addEventListener('click', moveButton);
 
 
