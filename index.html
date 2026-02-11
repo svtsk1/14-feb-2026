@@ -1,160 +1,197 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Для тебя 💖</title>
+<meta charset="UTF-8">
+<title>Для тебя 💖</title>
 
-  <style>
-    body {
-      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-    }
+<style>
+body {
+  background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
 
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
-      max-width: 420px;
-      width: 100%;
-    }
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  text-align: center;
+  width: 420px;
+  position: relative;
+  overflow: hidden;
+}
 
-    h1 {
-      margin-top: 0;
-    }
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+}
 
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #ff4d6d;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.buttons {
+  position: relative;
+  height: 60px;
+  margin-top: 15px;
+}
 
-    .buttons {
-      position: relative;
-      height: 50px;
-      margin-top: 20px;
-    }
+#no {
+  position: absolute;
+  background: #ccc;
+  color: #333;
+}
 
-    #yes {
-      background: #ff4d6d;
-    }
+#timer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
 
-    #no {
-      background: #ccc;
-      color: #333;
-      position: absolute;
-      left: 200px;
-      top: 0;
-    }
+/* Галерея */
+.gallery {
+  display: none;
+  margin-top: 20px;
+}
 
-    #timer {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #555;
-    }
+.gallery img {
+  width: 100%;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
 
-    /* 📸 Галерея */
-    .gallery {
-      margin-top: 25px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+.gallery img:hover {
+  transform: scale(1.03);
+}
 
-    .gallery img {
-      width: 100%;
-      border-radius: 12px;
-      object-fit: cover;
-      height: 120px;
-    }
-  </style>
+/* Лайтбокс */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 20px;
+}
+</style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>С 14 февраля 💘</h1>
-    <p>Ты делаешь мой мир лучше каждый день</p>
 
-    <h3>Ты будешь моей валентинкой? 💖</h3>
+<div class="card">
+  <h1>С 14 февраля 💘</h1>
+  <p>Ты делаешь мой мир лучше каждый день</p>
 
-    <div class="buttons">
-      <button id="yes">Да ❤️</button>
-      <button id="no">Нет 💔</button>
-    </div>
+  <h3>Ты будешь моей валентинкой? 💖</h3>
 
-    <p id="timer"></p>
-
-    <button id="music-btn">🎶 Включить нашу песню</button>
-    <audio id="music" src="music.mp3"></audio>
-
-    <!-- 📸 Фото -->
-    <div class="gallery">
-      <img src="photo1.jpg" alt="Мы вместе">
-      <img src="photo2.jpg" alt="Мы вместе">
-      <img src="photo3.jpg" alt="Мы вместе">
-      <img src="photo4.jpg" alt="Мы вместе">
-    </div>
+  <div class="buttons">
+    <button id="yes">Да ❤️</button>
+    <button id="no">Нет 💔</button>
   </div>
 
-  <script>
-    // 💔 Убегающая кнопка "Нет"
-    const noBtn = document.getElementById('no');
+  <p id="timer"></p>
 
-    noBtn.addEventListener('mouseover', () => {
-      const x = Math.random() * 200;
-      const y = Math.random() * 30;
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
-    });
+  <button id="music-btn">🎶 Включить нашу песню</button>
+  <audio id="music" src="music.mp3"></audio>
 
-    // ❤️ Кнопка "Да"
-    document.getElementById('yes').addEventListener('click', () => {
-      alert('Я так и знал 😌 Я тебя очень люблю ❤️');
-    });
+  <div class="gallery" id="gallery">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+  </div>
+</div>
 
-    // ⏳ Таймер (ПОМЕНЯЙ ДАТУ)
-    const startDate = new Date('2020-11-13T00:00:00');
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img">
+</div>
 
-    function updateTimer() {
-      const now = new Date();
-      const diff = now - startDate;
+<script>
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
-      const minutes = Math.floor(diff / (1000 * 60)) % 60;
+// ❤️ Убегающая кнопка по всей карточке
+const noBtn = document.getElementById('no');
+const card = document.querySelector('.card');
 
-      document.getElementById('timer').innerText =
-        `Мы знакомы уже ${days} дней ${hours} часов ${minutes} минут 💕`;
-    }
+noBtn.addEventListener('mouseover', () => {
+  const maxX = card.clientWidth - noBtn.clientWidth;
+  const maxY = card.clientHeight - noBtn.clientHeight;
 
-    setInterval(updateTimer, 1000);
-    updateTimer();
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
 
-    // 🎶 Музыка
-    const music = document.getElementById('music');
-    const musicBtn = document.getElementById('music-btn');
+  noBtn.style.left = randomX + 'px';
+  noBtn.style.top = randomY + 'px';
+});
 
-    musicBtn.addEventListener('click', () => {
-      if (music.paused) {
-        music.play();
-        musicBtn.innerText = '⏸ Пауза';
-      } else {
-        music.pause();
-        musicBtn.innerText = '🎶 Включить нашу песню';
-      }
-    });
-  </script>
+// 💖 Кнопка "Да"
+document.getElementById('yes').addEventListener('click', () => {
+  alert('Я тебя очень люблю ❤️');
+
+  document.getElementById('gallery').style.display = 'block';
+});
+
+// ⏳ Таймер (укажи правильную дату!)
+const startDate = new Date(2020, 10, 13); // 1 июня 2023
+
+function updateTimer() {
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+  const minutes = Math.floor(diff / (1000 * 60)) % 60;
+
+  document.getElementById('timer').innerText =
+    `Мы вместе уже ${days} дней ${hours} часов ${minutes} минут 💕`;
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// 🎶 Музыка
+const music = document.getElementById('music');
+const musicBtn = document.getElementById('music-btn');
+
+musicBtn.addEventListener('click', () => {
+  if (music.paused) {
+    music.play();
+    musicBtn.innerText = '⏸ Пауза';
+  } else {
+    music.pause();
+    musicBtn.innerText = '🎶 Включить нашу песню';
+  }
+});
+
+// 📸 Лайтбокс
+const images = document.querySelectorAll('.gallery img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+images.forEach(img => {
+  img.addEventListener('click', () => {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+  });
+});
+
+lightbox.addEventListener('click', () => {
+  lightbox.style.display = 'none';
+});
+
+</script>
 </body>
 </html>
